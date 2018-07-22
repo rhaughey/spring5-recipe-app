@@ -24,20 +24,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class IngredientControllerTest {
 
     @Mock
-    RecipeService recipeService;
+    private RecipeService recipeService;
 
     @Mock
-    IngredientService ingredientService;
+    private IngredientService ingredientService;
 
     @Mock
-    UnitOfMeasureService unitOfMeasureService;
+    private UnitOfMeasureService unitOfMeasureService;
 
-    IngredientController controller;
+    private IngredientController controller;
 
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         controller = new IngredientController(recipeService, ingredientService, unitOfMeasureService);
@@ -134,5 +134,14 @@ public class IngredientControllerTest {
                 .andExpect(view().name("redirect:/recipe/2/ingredient/3/show"));
 
 
+    }
+
+    @Test
+    public void testDeleteAction() throws Exception {
+        mockMvc.perform(get("/recipe/1/ingredient/1/delete"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/recipe/1/ingredients"));
+
+        verify(ingredientService, times(1)).deleteById(anyLong(), anyLong());
     }
 }
