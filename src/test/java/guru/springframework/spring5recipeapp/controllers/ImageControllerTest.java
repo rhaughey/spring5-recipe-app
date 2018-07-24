@@ -106,4 +106,5 @@ public class ImageControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(view().name("400error"));
     }
+
 }
